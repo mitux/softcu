@@ -4,6 +4,8 @@
 #include <QLabel>
 #include <QtGui>
 #include <QDir>
+#include <QVBoxLayout>
+#include <QPushButton>
 #include "images.h"
 
 QGridImages::QGridImages(QWidget *parent)
@@ -21,7 +23,6 @@ QGridImages::QGridImages(QWidget *parent)
   foreach(QFileInfo fileInfo, filesList)
   {
     tempFileName = fileInfo.filePath();
-    qDebug() << path+"/images"+fileInfo.filePath();
     QImage image(path+"/images"+tempFileName);
     copy = image.scaled(200,200,Qt::KeepAspectRatio);
     images.append(copy);
@@ -36,5 +37,12 @@ QGridImages::QGridImages(QWidget *parent)
     }
   }
 
-  setLayout(grid);
+  QWidget *qw = new QWidget();
+  QVBoxLayout *layout = new QVBoxLayout(qw);
+  layout->addItem(grid);
+  QPushButton *btn = new QPushButton(qw);
+  btn->setText("hola");
+  layout->addWidget(btn);
+
+  setLayout(qw);
 }

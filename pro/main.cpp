@@ -7,8 +7,8 @@ int main(int argc, char *argv[])
 
 	QMainMenu window;
 
-	window.move(300, 300);
-	window.setWindowTitle("View Images");
+    window.move(300, 300);
+    window.setWindowTitle("View Images");
 	window.show();
 
 	return app.exec();

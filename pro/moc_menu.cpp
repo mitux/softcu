@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'menu.h'
 **
-** Created: Wed May 27 16:31:03 2015
+** Created: Wed May 27 18:31:10 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -32,20 +32,21 @@ static const uint qt_meta_data_QMainMenu[] = {
 
  // slots: signature, parameters, type, tag, flags
       11,   10,   10,   10, 0x08,
-      27,   10,   10,   10, 0x08,
-      63,   50,   45,   10, 0x08,
-      82,   10,   10,   10, 0x08,
-     111,  108,   96,   10, 0x08,
-     126,  108,   10,   10, 0x08,
+      42,   10,   27,   10, 0x08,
+      78,   65,   60,   10, 0x08,
+      97,   10,   10,   10, 0x08,
+     126,  123,  111,   10, 0x08,
+     141,  123,   10,   10, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_QMainMenu[] = {
-    "QMainMenu\0\0OnShowPressed()\0histComp(QString)\0"
-    "bool\0first,second\0compare(hist,hist)\0"
-    "comparaHist()\0vector<Mat>\0im\0"
-    "histogram(Mat)\0saveHistogram(Mat)\0"
+    "QMainMenu\0\0OnShowPressed()\0QList<QString>\0"
+    "histComp(QString)\0bool\0first,second\0"
+    "compare(hist,hist)\0comparaHist()\0"
+    "vector<Mat>\0im\0histogram(Mat)\0"
+    "saveHistogram(Mat)\0"
 };
 
 void QMainMenu::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -55,7 +56,8 @@ void QMainMenu::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         QMainMenu *_t = static_cast<QMainMenu *>(_o);
         switch (_id) {
         case 0: _t->OnShowPressed(); break;
-        case 1: _t->histComp((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 1: { QList<QString> _r = _t->histComp((*reinterpret_cast< QString(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< QList<QString>*>(_a[0]) = _r; }  break;
         case 2: { bool _r = _t->compare((*reinterpret_cast< const hist(*)>(_a[1])),(*reinterpret_cast< const hist(*)>(_a[2])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 3: _t->comparaHist(); break;

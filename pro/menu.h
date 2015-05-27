@@ -31,7 +31,7 @@ Q_OBJECT
 
 private slots:
     void OnShowPressed();
-    void histComp(QString);
+    QList<QString> histComp(QString);
     static bool compare(const hist& first, const hist& second);
     void comparaHist();
     vector<Mat> histogram(Mat im);
@@ -40,6 +40,10 @@ private slots:
   private:
     QPushButton *show_btn;
 	QPushButton *empty_btn;
+    QLabel *percentatge;
+    QLabel *accio;
     QList<QString> fillList(QString file);
     QString getName(QString pre, int n);
+    double mult;
+
 };

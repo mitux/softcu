@@ -1,7 +1,11 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'menu.h'
 **
+<<<<<<< HEAD
 ** Created: Wed May 27 10:57:46 2015
+=======
+** Created: Wed May 27 13:31:59 2015
+>>>>>>> 9acc3238afe5aefa437a2908be74afa291926fea
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.2)
 **
 ** WARNING! All changes made in this file will be lost!

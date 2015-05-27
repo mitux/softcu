@@ -38,4 +38,6 @@ private slots:
   private:
     QPushButton *show_btn;
 	QPushButton *empty_btn;
+    QList<QString> fillList(QString file);
+    QString getName(QString pre, int n);
 };

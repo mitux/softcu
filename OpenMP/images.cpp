@@ -43,6 +43,4 @@ QGridImages::QGridImages(QWidget *parent)
   QPushButton *btn = new QPushButton(qw);
   btn->setText("hola");
   layout->addWidget(btn);
-
-  setLayout(qw);
 }

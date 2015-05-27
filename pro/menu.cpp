@@ -1,4 +1,7 @@
-
+#include <fstream>
+#include <iostream>
+#include <QImageWriter>
+#include <boost/lexical_cast.hpp>
 #include "menu.h"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -24,8 +27,6 @@ QMainMenu::QMainMenu(QWidget *parent)
 
 }
 
-
-
 void QMainMenu::OnShowPressed()
 {
 	QWidget *imagesWidget = new QWidget();
@@ -35,12 +36,12 @@ void QMainMenu::OnShowPressed()
 	QString tempFileName;
 	QList<QImage> images;
 	QList<QString> filesList;
-	filesList << "../image1.png" << "../image2.png" << "../image3.png";
+    //filesList << "../pro/image1.png" << "../pro/image2.png" << "../pro/image3.png";
+    filesList = fillList("/home/rrodrica20.alumnes/softcu/pro/input.txt");
 
 	foreach(QFileInfo fileInfo, filesList)
 	{
-		tempFileName = fileInfo.absoluteFilePath();
-		cout << tempFileName.toStdString() << endl;
+        tempFileName = fileInfo.absoluteFilePath();
 		Mat img;
 		img = imread(tempFileName.toStdString(), CV_LOAD_IMAGE_COLOR);
 		QImage image = QImage((uchar*) img.data, img.cols, img.rows, img.step, QImage::Format_RGB888);
@@ -49,12 +50,12 @@ void QMainMenu::OnShowPressed()
 		images.append(copy);
 	}
 
-	for (int i = 0; i < 3; i++) {
-		for(int j = 0; j < 3; j++) {
-			QPixmap p(QPixmap::fromImage(images[i]));
+    for (int i = 0; i < 3; i+=1) {
+        for(int j = 0; j < 3; j+=1) {
+            QPixmap p0(QPixmap::fromImage(images[3*i+j]));
 			QLabel *label = new QLabel(imagesWidget);
-			label->setPixmap(p);
-			grid->addWidget(label, i, j);
+            label->setPixmap(p0);
+            grid->addWidget(label, i, j);
 		}
 	}
 
@@ -69,7 +70,8 @@ void QMainMenu::Histogram()
 
     QString tempFileName;
     QList<QString> filesList;
-    filesList << "../image1.png" << "../image2.png" << "../image3.png";
+    //filesList << "../image1.png" << "../image2.png" << "../image3.png";
+    filesList = fillList("/home/rrodrica20.alumnes/softcu/pro/input.txt");
     QFileInfo f = filesList.at(1);
     tempFileName = f.absoluteFilePath();
 
@@ -133,4 +135,45 @@ void QMainMenu::Histogram()
 
     waitKey(0);
 
+}
+
+QList<QString> QMainMenu::fillList(QString file)
+{
+    QString dir_path = QFileInfo(file).absolutePath();
+    QString file_path = QFileInfo(file).absoluteFilePath();
+    QList<QString> filesList;
+    string f = file.toStdString();
+    ifstream fin(f.c_str());
+    string line;
+    int i = 1;
+    // paralelitzacio aqui
+    while(fin >> line){
+        // passem la linie(std::str) a QString
+        QString qline = QString::fromStdString(line);
+
+        // Configurem l'ImageWriter
+        QString name = getName("img_",i++);
+        QImageWriter imw("../imatges/"+ name +".jpg","jpg");
+
+        // Creem i escribim la imatge
+        Mat img;
+        img = imread(file_path.toStdString(), CV_LOAD_IMAGE_COLOR);
+        QImage image = QImage((uchar*) img.data, img.cols, img.rows, img.step, QImage::Format_RGB888);
+        imw.write(image);
+
+        // L'afegim a la llista
+        filesList << dir_path+"/images/"+qline;
+    }
+    return filesList;
+}
+
+QString QMainMenu::getName(QString pre, int n)
+{
+    string name = pre.toStdString();
+    QString qname;
+    int iterations = 5-n/10;
+    for(int i=0 ; i<iterations ; i++)
+        name+="0";
+    name=name+boost::lexical_cast<std::string>(n);
+    return qname.fromStdString(name);
 }

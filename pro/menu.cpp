@@ -30,7 +30,7 @@ QMainMenu::QMainMenu(QWidget *parent)
 
 }
 
-<<<<<<< HEAD
+
 bool QMainMenu::compare(const hist& first, const hist& second)
 {
   if (first.c < second.c)
@@ -39,8 +39,7 @@ bool QMainMenu::compare(const hist& first, const hist& second)
     return false;
 }
 
-=======
->>>>>>> 9acc3238afe5aefa437a2908be74afa291926fea
+
 void QMainMenu::OnShowPressed()
 {
 	QWidget *imagesWidget = new QWidget();
@@ -94,13 +93,12 @@ void QMainMenu::Histogram(Mat im)
       src = im;
 
 
-<<<<<<< HEAD
+
       /// Load two images with different environment settings
       if( !src.data )
         { return; }
-=======
 
->>>>>>> 9acc3238afe5aefa437a2908be74afa291926fea
+
 
 
       /// Convert to HSV
@@ -159,7 +157,7 @@ void QMainMenu::Histogram(Mat im)
 
 }
 
-<<<<<<< HEAD
+
 
 
 void QMainMenu::histComp(QString path1){
@@ -238,7 +236,7 @@ void QMainMenu::histComp(QString path1){
 }
 
 
-=======
+
 QList<QString> QMainMenu::fillList(QString file)
 {
     QString dir_path = QFileInfo(file).absolutePath();
@@ -279,4 +277,4 @@ QString QMainMenu::getName(QString pre, int n)
     name=name+boost::lexical_cast<std::string>(n);
     return qname.fromStdString(name);
 }
->>>>>>> 9acc3238afe5aefa437a2908be74afa291926fea
+

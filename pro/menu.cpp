@@ -26,8 +26,18 @@ QMainMenu::QMainMenu(QWidget *parent)
 	empty_btn->move(23, 80);
 
 	connect(show_btn, SIGNAL(clicked()), this, SLOT(OnShowPressed()));
-    //connect(empty_btn, SIGNAL(clicked()), this, SLOT(Histogram(Mat)));
+    connect(empty_btn, SIGNAL(clicked()), this, SLOT(comparaHist()));
 
+}
+
+void QMainMenu::comparaHist(){
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Open Image"), "../", tr("Histogram Files (*.xml)"));
+    if (fileName == NULL){
+        return;
+    }
+
+    this->histComp(fileName);
 }
 
 
@@ -56,14 +66,14 @@ void QMainMenu::OnShowPressed()
 	QList<QImage> images;
 	QList<QString> filesList;
     //filesList << "../pro/image1.png" << "../pro/image2.png" << "../pro/image3.png";
-    filesList = fillList("/home/rrodrica20.alumnes/softcu/pro/input.txt");
+    filesList = fillList("../pro/input.txt");
 
 	foreach(QFileInfo fileInfo, filesList)
 	{
         tempFileName = fileInfo.absoluteFilePath();
 		Mat img;
 		img = imread(tempFileName.toStdString(), CV_LOAD_IMAGE_COLOR);
-        Histogram(img);
+        saveHistogram(img);
 		QImage image = QImage((uchar*) img.data, img.cols, img.rows, img.step, QImage::Format_RGB888);
 		//QImage image(tempFileName);
 		copy = image.scaled(200,200,Qt::KeepAspectRatio);
@@ -84,63 +94,29 @@ void QMainMenu::OnShowPressed()
 
 
 
-void QMainMenu::Histogram(Mat im)
+void QMainMenu::saveHistogram(Mat im)
 {
-
-    Mat src, hsv;
-      vector<Mat> hsv_planes;
-      // Load image
-      src = im;
-
 
 
       /// Load two images with different environment settings
-      if( !src.data )
+      if( !im.data )
         { return; }
 
+        cout << "Polla" << endl;
+      vector<Mat> m = histogram(im);
 
 
-
-      /// Convert to HSV
-      cvtColor(src, hsv, CV_BGR2HSV );
-
-      // Extract HSV planes
-      split(hsv, hsv_planes);
-
-      /// Bins to use
-      int h_bins = 50; int s_bins = 50; int v_bins = 100;
-
-      // Ranges
-      float hrang[] = {0, 180};
-      const float *h_ranges = { hrang };
-
-      float srang[] = {0, 256};
-      const float *s_ranges = { srang };
-
-      float vrang[] = {0, 256};
-      const float *v_ranges = { vrang };
-
-      /// Histograms
       Mat hist_h, hist_s, hist_v;
 
-      /// Calculate the histogram for the H image
-      calcHist( &hsv_planes[0], 1, 0, Mat(), hist_h, 1, &h_bins, &h_ranges, true, false );
-      normalize( hist_h, hist_h, 0, 1, NORM_MINMAX, -1, Mat() );
+      hist_h = m.at(0);
+      hist_s = m.at(1);
+      hist_v = m.at(2);
 
-      calcHist( &hsv_planes[1], 1, 0, Mat(), hist_s, 1, &s_bins, &s_ranges, true, false );
-      normalize( hist_s, hist_s, 0, 1, NORM_MINMAX, -1, Mat() );
-
-      calcHist( &hsv_planes[2], 1, 0, Mat(), hist_v, 1, &v_bins, &v_ranges, true, false );
-      normalize( hist_v, hist_v, 0, 1, NORM_MINMAX, -1, Mat() );
+      cout << "sdasda" << endl;
 
 
-      /// Display
-      //namedWindow("histogram Demo", CV_WINDOW_AUTOSIZE );
-      //imshow("histogram Demo", hist_h );
-
-      QString path = QString("../histogrames/") + QString("hist_") + QString::number(hCont) + ".xml";
+      QString path = QString("../histogrames/") + getName("hist_",hCont++) + ".xml";
        cout << path.toStdString() << endl;
-       hCont++;
       // Store histograms on disc
       FileStorage fs(path.toLatin1().data(), FileStorage::WRITE);
 
@@ -151,13 +127,56 @@ void QMainMenu::Histogram(Mat im)
       fs.release();
 
 
-      histComp("../histogrames/hi_0.xml");
+      //histComp("../histogrames/hi_0.xml");
 
     waitKey(0);
 
 }
 
+vector<Mat> QMainMenu::histogram(Mat src)
+{
 
+    Mat hsv;
+    vector<Mat> hsv_planes;
+
+    /// Convert to HSV
+    cvtColor(src, hsv, CV_BGR2HSV );
+
+    // Extract HSV planes
+    split(hsv, hsv_planes);
+
+    /// Bins to use
+    int h_bins = 50; int s_bins = 50; int v_bins = 100;
+
+    // Ranges
+    float hrang[] = {0, 180};
+    const float *h_ranges = { hrang };
+
+    float srang[] = {0, 256};
+    const float *s_ranges = { srang };
+
+    float vrang[] = {0, 256};
+    const float *v_ranges = { vrang };
+
+    /// Histograms
+    Mat hist_h, hist_s, hist_v;
+
+    /// Calculate the histogram for the H image
+    calcHist( &hsv_planes[0], 1, 0, Mat(), hist_h, 1, &h_bins, &h_ranges, true, false );
+    normalize( hist_h, hist_h, 0, 1, NORM_MINMAX, -1, Mat() );
+
+    calcHist( &hsv_planes[1], 1, 0, Mat(), hist_s, 1, &s_bins, &s_ranges, true, false );
+    normalize( hist_s, hist_s, 0, 1, NORM_MINMAX, -1, Mat() );
+
+    calcHist( &hsv_planes[2], 1, 0, Mat(), hist_v, 1, &v_bins, &v_ranges, true, false );
+    normalize( hist_v, hist_v, 0, 1, NORM_MINMAX, -1, Mat() );
+cout << "sdasda" << endl;
+    vector<Mat> m;
+    m.push_back(hist_h);
+    m.push_back(hist_s);
+    m.push_back(hist_v);
+    return m;
+}
 
 
 void QMainMenu::histComp(QString path1){
@@ -180,6 +199,10 @@ void QMainMenu::histComp(QString path1){
 
   Mat hist_h1, hist_s1, hist_v1;
   Mat hist_h2, hist_s2, hist_v2;
+
+  tempFileName = fileInfo.absoluteFilePath();
+  Mat img;
+  img = imread(tempFileName.toStdString(), CV_LOAD_IMAGE_COLOR);
 
   // Read histogram1
   FileStorage fs1(path1.toLatin1().data(), FileStorage::READ);
@@ -240,7 +263,6 @@ void QMainMenu::histComp(QString path1){
 QList<QString> QMainMenu::fillList(QString file)
 {
     QString dir_path = QFileInfo(file).absolutePath();
-    QString file_path = QFileInfo(file).absoluteFilePath();
     QList<QString> filesList;
     string f = file.toStdString();
     ifstream fin(f.c_str());
@@ -249,30 +271,34 @@ QList<QString> QMainMenu::fillList(QString file)
     // paralelitzacio aqui
     while(fin >> line){
         // passem la linie(std::str) a QString
-        QString qline = QString::fromStdString(line);
+        QString qline = dir_path+"/images/"+ QString::fromStdString(line);
 
         // Configurem l'ImageWriter
         QString name = getName("img_",i++);
         QImageWriter imw("../imatges/"+ name +".jpg","jpg");
 
         // Creem i escribim la imatge
-        Mat img;
-        img = imread(file_path.toStdString(), CV_LOAD_IMAGE_COLOR);
-        QImage image = QImage((uchar*) img.data, img.cols, img.rows, img.step, QImage::Format_RGB888);
+        QImage image;
+        image.load(qline,"jpg");
         imw.write(image);
 
         // L'afegim a la llista
-        filesList << dir_path+"/images/"+qline;
+        filesList << qline;
     }
     return filesList;
 }
 
 QString QMainMenu::getName(QString pre, int n)
 {
+    int aux = n;
+    int count = 0;
     string name = pre.toStdString();
     QString qname;
-    int iterations = 5-n/10;
-    for(int i=0 ; i<iterations ; i++)
+    while(aux){
+        count++;
+        aux/=10;
+    }
+    for(int i=0 ; i<6-count ; i++)
         name+="0";
     name=name+boost::lexical_cast<std::string>(n);
     return qname.fromStdString(name);

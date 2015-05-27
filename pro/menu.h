@@ -21,7 +21,7 @@ Q_OBJECT
 
  public:
    QMainMenu(QWidget *parent = 0);
-   int hCont = 0;
+   int hCont = 1;
 
    struct hist {
      double c;
@@ -31,9 +31,11 @@ Q_OBJECT
 
 private slots:
     void OnShowPressed();
-    void Histogram(Mat im);
     void histComp(QString);
     static bool compare(const hist& first, const hist& second);
+    void comparaHist();
+    vector<Mat> histogram(Mat im);
+    void saveHistogram(Mat im);
 
   private:
     QPushButton *show_btn;

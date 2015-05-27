@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'menu.h'
 **
-** Created: Wed May 27 14:53:25 2015
+** Created: Wed May 27 16:31:03 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_QMainMenu[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,17 +32,20 @@ static const uint qt_meta_data_QMainMenu[] = {
 
  // slots: signature, parameters, type, tag, flags
       11,   10,   10,   10, 0x08,
-      30,   27,   10,   10, 0x08,
-      45,   10,   10,   10, 0x08,
-      81,   68,   63,   10, 0x08,
+      27,   10,   10,   10, 0x08,
+      63,   50,   45,   10, 0x08,
+      82,   10,   10,   10, 0x08,
+     111,  108,   96,   10, 0x08,
+     126,  108,   10,   10, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_QMainMenu[] = {
-    "QMainMenu\0\0OnShowPressed()\0im\0"
-    "Histogram(Mat)\0histComp(QString)\0bool\0"
-    "first,second\0compare(hist,hist)\0"
+    "QMainMenu\0\0OnShowPressed()\0histComp(QString)\0"
+    "bool\0first,second\0compare(hist,hist)\0"
+    "comparaHist()\0vector<Mat>\0im\0"
+    "histogram(Mat)\0saveHistogram(Mat)\0"
 };
 
 void QMainMenu::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -52,10 +55,13 @@ void QMainMenu::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         QMainMenu *_t = static_cast<QMainMenu *>(_o);
         switch (_id) {
         case 0: _t->OnShowPressed(); break;
-        case 1: _t->Histogram((*reinterpret_cast< Mat(*)>(_a[1]))); break;
-        case 2: _t->histComp((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 3: { bool _r = _t->compare((*reinterpret_cast< const hist(*)>(_a[1])),(*reinterpret_cast< const hist(*)>(_a[2])));
+        case 1: _t->histComp((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 2: { bool _r = _t->compare((*reinterpret_cast< const hist(*)>(_a[1])),(*reinterpret_cast< const hist(*)>(_a[2])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 3: _t->comparaHist(); break;
+        case 4: { vector<Mat> _r = _t->histogram((*reinterpret_cast< Mat(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< vector<Mat>*>(_a[0]) = _r; }  break;
+        case 5: _t->saveHistogram((*reinterpret_cast< Mat(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -93,9 +99,9 @@ int QMainMenu::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 6;
     }
     return _id;
 }
